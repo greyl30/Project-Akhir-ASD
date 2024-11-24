@@ -9,6 +9,7 @@ import java.util.Random; // Untuk menghasilkan angka acak
 import java.util.Timer; // Untuk mengatur waktu.
 import java.util.TimerTask; // Untuk menjalankan timer.
 
+// Deklarasi variabel
 public class MemoryAngkaSorting {
     private static JFrame frame; // Frame utama 
     private static JPanel panelCards; // Panel untuk menampung semua halaman
@@ -24,69 +25,70 @@ public class MemoryAngkaSorting {
     private static boolean ascendingOrder; // Mengecek urutan adalah ascending atau descending 
 
     public static void main(String[] args) {
+        // Menginisialisasi tampilan GUI
         SwingUtilities.invokeLater(() -> {
-            frame = new JFrame("Memory Game"); // Frame utama untuk aplikasi
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame = new JFrame("Memory Game"); // Frame utama untuk aplikasi dengan judul Memory Game
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Mengatur properti saat jendela ditutup
             frame.setSize(500, 300); // Mengatur ukuran frame utama
 
-            panelCards = new JPanel(new CardLayout()); // Halaman utama dan halaman jawaban salah
+            panelCards = new JPanel(new CardLayout()); // Mengatur tata letak saat pergantian panel (halaman)
 
             // Membuat halaman utama
-            panelUtama = new JPanel();
-            panelUtama.setLayout(new BoxLayout(panelUtama, BoxLayout.Y_AXIS)); // Layout vertikal untuk halaman utama
+            panelUtama = new JPanel(); // Objek untuk menyimpan komponen GUI seperti tombol, label, kolom input
+            panelUtama.setLayout(new BoxLayout(panelUtama, BoxLayout.Y_AXIS)); // Mengatur layout tampilan secara vertikal (atas ke bawah)
             panelUtama.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
 
-            labelLevel = new JLabel("Selamat Datang di Game", SwingConstants.CENTER);
+            labelLevel = new JLabel("Selamat Datang di Game", SwingConstants.CENTER); // JLabel untuk menampilkan tampilan teks
             labelLevel.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
             panelUtama.add(Box.createVerticalStrut(10)); // Margin
-            panelUtama.add(labelLevel);
+            panelUtama.add(labelLevel); // Menambahkan tampilan level
 
-            labelInstruksi = new JLabel("Pilih jenis pengurutan di bawah ini!", SwingConstants.CENTER);
+            labelInstruksi = new JLabel("Pilih jenis pengurutan di bawah ini!", SwingConstants.CENTER); // JLabel untuk menampilkan tampilan teks
             labelInstruksi.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
             panelUtama.add(Box.createVerticalStrut(10)); // Margin
-            panelUtama.add(labelInstruksi);
+            panelUtama.add(labelInstruksi); // Menambahkan teks instruksi
 
-            labelAngka = new JLabel("", SwingConstants.CENTER); // Untuk menampilkan angka acak
+            labelAngka = new JLabel("", SwingConstants.CENTER); // Objek untuk menampilkan angka acak
             labelAngka.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
             labelAngka.setVisible(false); // Menyembunyikan angka sebelum permainan dimulai
             panelUtama.add(Box.createVerticalStrut(20)); // Margin
-            panelUtama.add(labelAngka);
+            panelUtama.add(labelAngka); // Menampilkan angka acak
 
-            JPanel panelTombol = new JPanel(new FlowLayout()); // Untuk menampung tombol pilihan urutan
-            buttonAscending = new JButton("Ascending"); // Tombol untuk memilih ascending
-            buttonDescending = new JButton("Descending"); // Tombol untuk memilih descending
-            panelTombol.add(buttonAscending);
-            panelTombol.add(buttonDescending);
+            JPanel panelTombol = new JPanel(new FlowLayout()); // Untuk menata elemen tombol
+            buttonAscending = new JButton("Ascending"); // Membuat tombol ascending
+            buttonDescending = new JButton("Descending"); // Membuat tombol ascending
+            panelTombol.add(buttonAscending); // Menampilkan tombol ascending
+            panelTombol.add(buttonDescending); // Menampilkan tombol descending
             panelUtama.add(Box.createVerticalStrut(10)); // Margin
-            panelUtama.add(panelTombol); // Menambahkan panel tombol ke halaman utama
+            panelUtama.add(panelTombol); // Menambahkan tombol ke halaman utama
 
             JPanel panelInput = new JPanel(new FlowLayout()); // Panel untuk kolom input dan tombol submit
-            inputField = new JTextField(20); // Panjang karakter pada kolom input adalah 20
-            submitButton = new JButton("Submit"); // Tombol untuk submit
-            panelInput.add(inputField);
-            panelInput.add(submitButton);
+            inputField = new JTextField(20); // Membuat kolom input dengan panjang karakter 20
+            submitButton = new JButton("Submit"); // Membuat tombol submit
+            panelInput.add(inputField); // Menampilkan kolom input
+            panelInput.add(submitButton); // Menampilkan tombol submit
             panelUtama.add(Box.createVerticalStrut(10)); // Margin
-            panelUtama.add(panelInput); // Menambahkan panel input ke halaman utama
+            panelUtama.add(panelInput); // Menambahkan kolom input ke halaman utama
 
             // Membuat halaman untuk jawaban salah
             panelSalah = new JPanel(); 
-            panelSalah.setLayout(new BoxLayout(panelSalah, BoxLayout.Y_AXIS)); // Layout vertikal untuk halaman salah
-            JLabel labelSalah = new JLabel("", SwingConstants.CENTER); // Label untuk menampilkan pesan kesalahan
+            panelSalah.setLayout(new BoxLayout(panelSalah, BoxLayout.Y_AXIS)); // Mengatur layout secara vertikal
+            JLabel labelSalah = new JLabel("", SwingConstants.CENTER); // Untuk menampilkan pesan kesalahan
             labelSalah.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
             panelSalah.add(Box.createVerticalStrut(20)); // Margin
             panelSalah.add(labelSalah); // Menambahkan label ke halaman salah
 
-            cobaLagiButton = new JButton("Coba Lagi"); // Tombol untuk mencoba lagi setelah jawaban salah
+            cobaLagiButton = new JButton("Coba Lagi"); // Membuat tombol 'coba lagi'
             cobaLagiButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Mengatur elemen berada di tengah
             panelSalah.add(Box.createVerticalStrut(20)); // Margin
-            panelSalah.add(cobaLagiButton); // Menambahkan tombol "Coba Lagi"
+            panelSalah.add(cobaLagiButton); // Menampilkan tombol "Coba Lagi"
 
             // Menambahkan halaman ke panelCards
             panelCards.add(panelUtama, "main"); // Halaman utama diberi nama "main"
             panelCards.add(panelSalah, "wrong"); // Halaman jawaban salah diberi nama "wrong"
 
-            frame.add(panelCards); 
-            frame.setVisible(true); 
+            frame.add(panelCards); // Menambahkan panelCards ke frame
+            frame.setVisible(true); // Menampilkan frame
 
             labelAngka.setVisible(false); // Menyembunyikan angka saat pertama kali aplikasi berjalan
             panelInput.setVisible(false); // Menyembunyikan kolom input saat pertama kali aplikasi berjalan
@@ -113,15 +115,15 @@ public class MemoryAngkaSorting {
             urutanAsli[i] = random.nextInt(9) + 1; // Angka acak antara 1 sampai 9
             angkaTampil.append(urutanAsli[i]).append(" "); // Menambahkan angka ke string
         }
-        labelAngka.setText(angkaTampil.toString().trim()); // Menampilkan angka 
-        labelAngka.setVisible(true); // Menampilkan label angka
+        labelAngka.setText(angkaTampil.toString().trim()); // Objek yang berisi angka acak
+        labelAngka.setVisible(true); // Menampilkan angka acak
         panelInput.setVisible(true); // Menampilkan kolom input dan tombol submit
 
         urutanTarget = ascending ? bubbleSort(urutanAsli.clone()) : bubbleSortDesc(urutanAsli.clone()); // Meengecek urutan yang dipilih
 
         // Mengatur timer
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Timer timer = new Timer(); // Membuat objek timer
+        timer.schedule(new TimerTask() { // Mengatur jadwal timer dijalankan
             @Override
             public void run() {
                 labelAngka.setText(""); // Menghilangkan angka setelah 3 detik
@@ -132,7 +134,7 @@ public class MemoryAngkaSorting {
 
     // Mengecek inputan pemain
     private static void evaluasiJawaban(JPanel panelInput, JLabel labelSalah) {
-        String[] input = inputField.getText().split(" "); // Mengambil input pemain 
+        String[] input = inputField.getText().split(" "); // Mengambil input pemain (dan membaca spasi yang diinputkan)
         int[] urutanPengguna = new int[input.length]; // Array untuk menyimpan urutan pemain
         try {
             for (int i = 0; i < input.length; i++) {
